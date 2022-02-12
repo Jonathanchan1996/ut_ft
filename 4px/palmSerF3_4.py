@@ -13,12 +13,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument("comPort")
 #parser.add_argument("fileName")
 args = parser.parse_args()
-myCOM = 'COM'+str(args.comPort)
+
+#myCOM = 'COM'+str(args.comPort)
+myCOM = '/dev/ttyUSB'+str(args.comPort)
 print('Com port = ', myCOM)
 
 UDP_IP = "127.0.0.2"
-COM_ID = (lambda myCom: int(myCom[-1]) if len(myCom)==4 else int(myCom[-2])*10+int(myCom[-1]))(myCOM)
-UDP_PORT = 9900+COM_ID
+#COM_ID = (lambda myCom: int(myCom[-1]) if len(myCom)==4 else int(myCom[-2])*10+int(myCom[-1]))(myCOM)
+UDP_PORT = 9900+args.comPort
 print("UDP channel is ", UDP_IP, UDP_PORT)
 def write_csv(fileName,data):
     with open(fileName, 'a') as outfile:
