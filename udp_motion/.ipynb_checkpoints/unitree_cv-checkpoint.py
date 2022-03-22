@@ -66,3 +66,39 @@ class cvFindLine():
         return (0xFF & cv.waitKey(5) == 27)
     def __del__(self):
         cv.destroyAllWindows()
+        
+        
+class cvFindCircle():
+    def __init__(self,videoSrc):
+        self.cam = cv.VideoCapture(videoSrc)
+        ret, img = self.cam.read()
+        self.h,self.w, _ = img.shape
+        self.h_half, self.w_half = int(self.h/2), int(self.w/2)
+        self.upLim, self.lwLim = self.h_half+50, self.h_half+100
+        self.last_l_pos, self.last_r_pos = 0, self.w
+        self.centerPt = self.w_half
+        
+    def run(self, isPlot=False):
+        ret, img = self.cam.read()
+        cimg = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        circles = cv.HoughCircles(cimg,cv.HOUGH_GRADIENT,1,40,
+                                param1=100,param2=100,minRadius=80,maxRadius=1000)
+        if circles is not None:
+            circles = np.uint16(np.around(circles))
+            if isPlot:
+                for i in circles[0,:]:
+                    cv.circle(img,(i[0],i[1]),i[2],(0,255,0),2)
+                # cv.circle(img,(i[0],i[1]),2,(0,0,255),3)
+            #print(circles[0,:][0][1]-h_half,circles[0,:][0][0]-w_half)
+                cv.imshow("Live", img)
+            return circles[0,:][0][0]-self.w_half, circles[0,:][0][1]-self.h_half
+        else:
+            if isPlot:
+                cv.imshow("Live", img)
+            return 0,0
+    
+    def exitCv(self):
+        return (0xFF & cv.waitKey(5) == 27)
+    def __del__(self):
+        cv.destroyAllWindows()
+        

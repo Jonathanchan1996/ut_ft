@@ -79,7 +79,7 @@ class rawPath():
 
 
 class setPoint:
-     def __init__(self, x=0, y=0, yaw=0,timeStep=0.01,maxRunCnt=10000, toleranceCm=0.1, stopMs=0):
+     def __init__(self, x=0, y=0, yaw=0,timeStep=0.01,maxRunCnt=10000, toleranceCm=0.1, stopMs=0, isKeyboardCont=False):
             self.x   = x   #Local frame
             self.y   = y   #local frame
             self.yaw = yaw #Global frame
@@ -87,7 +87,7 @@ class setPoint:
             self.maxRunCnt = maxRunCnt #per keyprint -> Runtime is timeStep*maxRunCnt
             self.toleCm = toleranceCm #tolerance cm 
             self.stopMs = stopMs #10ms resolution
-            
+            self.isKeyboardCont = isKeyboardCont
 
 def speedLim(x, lim):
     return np.sign(x)*np.min([np.abs(x), lim])
